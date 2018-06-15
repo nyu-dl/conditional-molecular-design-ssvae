@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import numpy as np
 import tensorflow as tf
 
@@ -88,8 +90,8 @@ class Model(object):
         batch_size_U=int(self.batch_size*len(trnX_U)/(len(trnX_L)+len(trnX_U)))
         n_batch=int(len(trnX_L)/batch_size_L)
         
-        batch_size_val_L=len(valX_L)/10
-        batch_size_val_U=len(valX_U)/10
+        batch_size_val_L=int(len(valX_L)/10)
+        batch_size_val_U=int(len(valX_U)/10)
 
         cost = (objL * float(batch_size_L) + objU * float(batch_size_U))/float(batch_size_L+batch_size_U) + float(batch_size_L)/float(batch_size_L+batch_size_U) * (self.beta * objYpred_MSE)
         cost_val = objYpred_MSE

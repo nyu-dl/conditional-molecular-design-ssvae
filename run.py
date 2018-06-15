@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import numpy as np
 import pandas as pds
 from preprocessing import smiles_to_seq, vectorize
@@ -21,7 +23,7 @@ ntst=10000
 
 
 # data preparation
-print '::: data preparation'
+print('::: data preparation')
 
 smiles = pds.read_csv(data_uri).as_matrix()[:ntrn+ntst,0] #0: SMILES
 Y = np.asarray(pds.read_csv(data_uri).as_matrix()[:ntrn+ntst,1:], dtype=np.float32) # 1: MolWT, 2: LogP, 3: QED 
@@ -66,7 +68,7 @@ valY_L=scaler_Y.transform(valY_L)
 
 
 ## model training
-print '::: model training'
+print('::: model training')
 
 seqlen_x = X.shape[1]
 dim_x = X.shape[2]
@@ -89,13 +91,13 @@ with model.session:
     tstY_hat=scaler_Y.inverse_transform(model.predict(tstX))
 
     for j in range(dim_y):
-        print [j, mean_absolute_error(tstY[:,j], tstY_hat[:,j])]
+        print([j, mean_absolute_error(tstY[:,j], tstY_hat[:,j])])
         
         
     ## unconditional generation
     for t in range(10):
         smi = model.sampling_unconditional()
-        print t, smi, get_property(smi)
+        print([t, smi, get_property(smi)])
     
     ## conditional generation (e.g. MolWt=250)
     yid = 0
@@ -104,4 +106,4 @@ with model.session:
     
     for t in range(10):
         smi = model.sampling_conditional(yid, ytarget_transform)
-        print t, smi, get_property(smi)
+        print([t, smi, get_property(smi)])
