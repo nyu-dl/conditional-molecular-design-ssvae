@@ -225,6 +225,9 @@ class Model(object):
             kbestid = np.argsort(-cands2_score)[:k]
             cands=np.copy(cands2[kbestid])
             cands_score=np.copy(cands2_score[kbestid])
+            
+            if np.sum([np.argmax(c[0][i+1]) for c in cands])==0:
+                break
 
         sampletxt = ''.join([self.int_to_char[np.argmax(t)] for t in cands[0,0]]).strip()
 
